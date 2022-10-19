@@ -1,5 +1,11 @@
 <script setup>
-import {RouterView, RouterLink} from "vue-router"
+import { RouterView, RouterLink } from "vue-router"
+import { useUserStore } from './store/user'
+const userStore = useUserStore()
+const logOut = async () => {
+  await userStore.logOut()
+}
+
 </script>
 
 <template>
@@ -15,9 +21,10 @@ import {RouterView, RouterLink} from "vue-router"
     <router-link to="register">
       Register
     </router-link>
-    <button>
+    <button @click="logOut()">
       Logout
     </button>
-</nav>
+
+  </nav>
   <RouterView />
 </template>
