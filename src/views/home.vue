@@ -4,10 +4,12 @@ const userStore = useUserStore()
 </script>
 
 <template>
-    <h1>
-        This is the home page
-    </h1>
-    <h3>
-        {{userStore.userData}}
-    </h3>
+    <div class="container">
+        <h1>
+            This is the home page
+        </h1>
+        <h3>
+            Bienvenido {{userStore.userData?.email}}
+        </h3>
+    </div>
 </template>
