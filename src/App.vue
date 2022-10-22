@@ -1,42 +1,49 @@
 <script setup>
 import { RouterView, RouterLink } from "vue-router"
 import { useUserStore } from './store/user'
+import { useDatabaseStore } from './store/database'
 const userStore = useUserStore()
 const logOut = async () => {
   await userStore.logOut()
 }
+const databaseStore = useDatabaseStore()
+databaseStore.getOrders()
 
 </script>
 
 <template>
-  <div class="container" v-if="!userStore.loadingState">
-    <ul class="nav" v-if="!userStore.loadingSession">
-      <li class="nav-item">
-        <router-link to="/" class="nav-link" v-if="userStore.userData">
-          Home
-        </router-link>
-      </li>
-      <li class="nav-item">
-        <router-link to="login" class="nav-link" v-if="!userStore.userData">
-          login
-        </router-link>
-      </li>
-      <li class="nav-item" v-if="!userStore.userData">
-        <router-link to="register" class="nav-link">
-          Register
-        </router-link>
-      </li>
-      <li class="nav-item" v-if="userStore.userData">
-        <button @click="logOut()" class="btn btn-outline-danger">
-          Logout
-        </button>
-      </li>
+  <div v-if="!userStore.loadingState">
+    <ul class="border nav d-flex justify-content-between p-2 b-solid" v-if="!userStore.loadingSession">
+      <div class="d-flex">
+        <li class="nav-item">
+          <router-link to="/" class="nav-link" v-if="userStore.userData">
+            Orders
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link" to="registerDevice" v-if="userStore.userData">
+            Enter device
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="login" class="nav-link" v-if="!userStore.userData">
+            login
+          </router-link>
+        </li>
+        <li class="nav-item" v-if="!userStore.userData">
+          <router-link to="register" class="nav-link">
+            Register
+          </router-link>
+        </li>
+      </div>
+      <div>
+        <li class="nav-item" v-if="userStore.userData">
+          <button @click="logOut()" class="btn btn-outline-danger">
+            Logout
+          </button>
+        </li>
+      </div>
     </ul>
     <RouterView />
-  </div>
-  <div class="container" v-else>
-    <h1>
-      Loading...
-    </h1>
   </div>
 </template>

@@ -16,14 +16,18 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-    <div class="container">
-        <h1>
-            LOGIN PAGE
-        </h1>
-        <form @submit.prevent="handleSubmit(email,password)">
-            <input type="email" placeholder="email" v-model="email" class="mb-3">
-            <input type="password" placeholder="password" v-model="password" class="mb-3">
-            <button type="submit" :disabled="userStore.loadingState" class="mb-3 btn btn-primary">Login</button>
+    <div class="container d-flex justify-content-center">
+        <form @submit.prevent="handleSubmit(email,password)" class="w-25 mt-5">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input v-model="email" type="email" class="form-control" id="exampleInputEmail1"
+                    aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input v-model="password" type="password" class="form-control" id="exampleInputPassword1">
+            </div>
+            <button type="submit" class="btn btn-primary" :disabled="userStore.loadingState">Login</button>
         </form>
     </div>
 </template>
