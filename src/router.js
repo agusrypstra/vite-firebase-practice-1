@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+
 import { useUserStore } from "./store/user";
 
 const requireAuth = async (to, from, next) => {
@@ -36,6 +37,18 @@ const router = createRouter({
       name: "registerDevice",
       component: () => import("../src/views/registerDevice.vue"),
       beforeEnter: requireAuth,
+    },
+    {
+      path: "/edit/:id",
+      name: "edit",
+      beforeEnter: requireAuth,
+      component: () => import("../src/views/edit.vue"),
+    },
+    {
+      path: "/myorders",
+      name: "myOrders",
+      beforeEnter: requireAuth,
+      component: () => import("../src/views/myOrders.vue"),
     },
   ],
 });

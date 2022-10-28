@@ -21,27 +21,24 @@ const handleSubmit = () => {
 
 <template>
     <div class="container d-flex justify-content-center">
-        <form class="mt-5">
-            <h1>
-                Register device
-            </h1>
-            <div class="mb-3">
-                <label class="form-label">Device type</label>
-                <select name="select" v-model="type" class="form-select">
-                    <option value="notebook">Notebook</option>
-                    <option value="desktop">Desktop pc</option>
-                    <option value="allInOne">All in one</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <input type="text" placeholder="Describes the failure" class="form-control" v-model="description">
-            </div>
-            <div class="mb-3">
-                <input type="text" placeholder="Customer" class="form-control" v-model="customer">
-            </div>
-            <div class="mb-3">
-                <button type="submit" class="btn btn-primary" @click.prevent="handleSubmit()">Submit</button>
-            </div>
-        </form>
+
+        <div class="d-flex flex-column text-center">
+            <h1>Device register</h1>
+            <form class="mt-5 border border-secondary rounded p-3">
+                <div class="mb-3">
+                    <input type="text" v-model="type" placeholder="Type" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <input type="text" placeholder="Describes the failure" class="form-control" v-model="description">
+                </div>
+                <div class="mb-3">
+                    <input type="text" placeholder="Customer" class="form-control" v-model="customer">
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary" @click.prevent="handleSubmit()">Submit</button>
+                </div>
+            </form>
+        </div>
+
     </div>
 </template>

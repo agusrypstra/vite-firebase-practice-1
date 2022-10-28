@@ -1,13 +1,11 @@
 <script setup>
 import { RouterView, RouterLink } from "vue-router"
 import { useUserStore } from './store/user'
-import { useDatabaseStore } from './store/database'
 const userStore = useUserStore()
 const logOut = async () => {
   await userStore.logOut()
 }
-const databaseStore = useDatabaseStore()
-databaseStore.getOrders()
+
 
 </script>
 
@@ -18,6 +16,11 @@ databaseStore.getOrders()
         <li class="nav-item">
           <router-link to="/" class="nav-link" v-if="userStore.userData">
             Orders
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/myOrders" class="nav-link" v-if="userStore.userData">
+            My Orders
           </router-link>
         </li>
         <li class="nav-item">
@@ -36,8 +39,11 @@ databaseStore.getOrders()
           </router-link>
         </li>
       </div>
-      <div>
-        <li class="nav-item" v-if="userStore.userData">
+      <div class="d-flex align-items-center" v-if="userStore.userData">
+        <li class="nav-item me-2">
+          User: {{ userStore.userData.email }}
+        </li>
+        <li class="nav-item">
           <button @click="logOut()" class="btn btn-outline-danger">
             Logout
           </button>

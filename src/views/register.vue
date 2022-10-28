@@ -3,8 +3,8 @@ import { ref } from "vue";
 import { useUserStore } from "../store/user"
 const userStore = useUserStore()
 
-const email = ref("agusrypstra@jaja.com")
-const password = ref("asdasdasd")
+const email = ref("")
+const password = ref("")
 
 const handleSubmit = async () => {
     if (!email.value || password.value < 6) {
@@ -19,7 +19,7 @@ const handleSubmit = async () => {
 
 <template>
     <div class="container d-flex justify-content-center">
-        <form @submit.prevent="handleSubmit(email,password)" class="w-25 mt-5">
+        <form @submit.prevent="handleSubmit(email, password)" class="w-25 mt-5">
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email address</label>
                 <input v-model="email" type="email" class="form-control" id="exampleInputEmail1"
