@@ -18,11 +18,11 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="container d-flex justify-content-center">
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Edit order</h5>
+    <div>
+        <div>
+            <div>
+                <div>
+                    <h5>Edit order</h5>
                     <h6>Type</h6>
                     <input type="text" v-model="order.type">
                     <h6>Description</h6>

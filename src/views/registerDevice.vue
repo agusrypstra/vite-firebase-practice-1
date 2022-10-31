@@ -20,23 +20,15 @@ const handleSubmit = () => {
 </script>
 
 <template>
-    <div class="container d-flex justify-content-center">
+    <div>
 
-        <div class="d-flex flex-column text-center">
+        <div>
             <h1>Device register</h1>
-            <form class="mt-5 border border-secondary rounded p-3">
-                <div class="mb-3">
-                    <input type="text" v-model="type" placeholder="Type" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <input type="text" placeholder="Describes the failure" class="form-control" v-model="description">
-                </div>
-                <div class="mb-3">
-                    <input type="text" placeholder="Customer" class="form-control" v-model="customer">
-                </div>
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-primary" @click.prevent="handleSubmit()">Submit</button>
-                </div>
+            <form>
+                <input type="text" v-model="type" placeholder="Type">
+                <input type="text" placeholder="Describes the failure" v-model="description">
+                <input type="text" placeholder="Customer" v-model="customer">
+                <button type="submit" @click.prevent="handleSubmit()">Submit</button>
             </form>
         </div>
 

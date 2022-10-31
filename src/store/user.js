@@ -45,7 +45,8 @@ export const useUserStore = defineStore("userStore", {
         );
         this.userData = { email: user.email, uid: user.uid };
       } catch (error) {
-        console.log(error);
+        console.log(error.code);
+        return error.code;
       } finally {
         this.loadingState = false;
         await router.push("/");

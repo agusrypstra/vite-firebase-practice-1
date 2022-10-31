@@ -1,7 +1,16 @@
 <script setup>
-import { RouterView, RouterLink } from "vue-router"
+import { watch, ref } from "vue";
+import { RouterView, RouterLink, useRoute } from "vue-router"
 import { useUserStore } from './store/user'
+
+const route = useRoute()
 const userStore = useUserStore()
+
+const selectedKeys = ref([])
+
+watch(() => route.name, () => { selectedKeys.value = [route.name] })
+
+
 const logOut = async () => {
   await userStore.logOut()
 }
@@ -10,46 +19,49 @@ const logOut = async () => {
 </script>
 
 <template>
-  <div v-if="!userStore.loadingState">
-    <ul class="border nav d-flex justify-content-between p-2 b-solid" v-if="!userStore.loadingSession">
-      <div class="d-flex">
-        <li class="nav-item">
-          <router-link to="/" class="nav-link" v-if="userStore.userData">
+  <a-layout class="layout">
+    <a-layout-header v-if="!userStore.loadingState" mode="horizontal">
+      <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }"
+        v-if="!userStore.loadingSession">
+        <a-menu-item v-if="userStore.userData" key="home">
+          <router-link to="/">
             Orders
           </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/myOrders" class="nav-link" v-if="userStore.userData">
+        </a-menu-item>
+        <a-menu-item v-if="userStore.userData" key="myorders">
+          <router-link to="/myOrders">
             My Orders
           </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link" to="registerDevice" v-if="userStore.userData">
+        </a-menu-item>
+        <a-menu-item v-if="userStore.userData" key="registerdevice">
+          <router-link to="registerDevice">
             Enter device
           </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="login" class="nav-link" v-if="!userStore.userData">
+        </a-menu-item>
+        <a-menu-item v-if="!userStore.userData" key="login">
+          <router-link to="login">
             login
           </router-link>
-        </li>
-        <li class="nav-item" v-if="!userStore.userData">
-          <router-link to="register" class="nav-link">
+        </a-menu-item>
+        <a-menu-item v-if="!userStore.userData" key="register">
+          <router-link to="register">
             Register
           </router-link>
-        </li>
-      </div>
-      <div class="d-flex align-items-center" v-if="userStore.userData">
-        <li class="nav-item me-2">
-          User: {{ userStore.userData.email }}
-        </li>
-        <li class="nav-item">
-          <button @click="logOut()" class="btn btn-outline-danger">
+        </a-menu-item>
+        <a-menu-item type="danger">
+          <a-button v-if="userStore.userData" @click="logOut()">
             Logout
-          </button>
-        </li>
+          </a-button>
+        </a-menu-item>
+      </a-menu>
+    </a-layout-header>
+    <a-layout-content style="padding: 0 50px">
+      <div :style="{ background: '#fff', padding: '24px', minHeight: '280px' }">
+        <RouterView />
       </div>
-    </ul>
-    <RouterView />
-  </div>
+    </a-layout-content>
+    <a-layout-footer style="text-align: center">
+      Designed by Agustin rypstra ©2022
+    </a-layout-footer>
+  </a-layout>
 </template>
