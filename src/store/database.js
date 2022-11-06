@@ -41,13 +41,15 @@ export const useDatabaseStore = defineStore("database", {
       try {
         const objetoDoc = {
           type: device.type,
-          description: device.description,
+          description: device.failure,
           customer: device.customer,
+          accesories: device.accesories,
         };
         const docRef = await addDoc(collection(db, "orders"), objetoDoc);
         this.documents.push({ id: docRef.id, ...objetoDoc });
+        router.push("/");
       } catch (error) {
-        console.log(error);
+        return error.code;
       }
     },
     async readOrder(id) {
@@ -82,6 +84,25 @@ export const useDatabaseStore = defineStore("database", {
       }
       console.log(id, order.value.type);
     },
+    async finishOrder(id, diagnostic) {
+      const docRef = doc(db, "orders", id);
+      const docSpan = await getDoc(docRef);
+      this.documents = this.documents.map((order) =>
+        order.id === id
+          ? {
+              diagnostic: diagnostic,
+              finished: true,
+              ...order,
+            }
+          : order
+      );
+      await updateDoc(docRef, {
+        diagnostic: diagnostic,
+        finished: true,
+      });
+      router.push("record");
+      console.log(this.documents);
+    },
     async deleteOrder(id) {
       try {
         this.documents = this.documents.filter((order) => order.id !== id);
@@ -114,7 +135,7 @@ export const useDatabaseStore = defineStore("database", {
     },
     async getMyOrders() {
       this.myDocuments = this.documents.filter(
-        (item) => item.tech === auth.currentUser.email
+        (item) => item.tech === auth.currentUser.email && !item.finished
       );
       console.log(this.documents);
     },

@@ -50,6 +50,12 @@ const router = createRouter({
       beforeEnter: requireAuth,
       component: () => import("../src/views/myOrders.vue"),
     },
+    {
+      path: "/record",
+      name: "record",
+      beforeEnter: requireAuth,
+      component: () => import("../src/views/record.vue"),
+    },
   ],
 });
 

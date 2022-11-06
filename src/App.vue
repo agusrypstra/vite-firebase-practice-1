@@ -1,12 +1,16 @@
 <script setup>
+import { auth } from "./firebaseConfig"
 import { watch, ref } from "vue";
 import { RouterView, RouterLink, useRoute } from "vue-router"
 import { useUserStore } from './store/user'
+import { useDatabaseStore } from './store/database'
 
+const databaseStore = useDatabaseStore()
 const route = useRoute()
 const userStore = useUserStore()
 
 const selectedKeys = ref([])
+databaseStore.getOrders()
 
 watch(() => route.name, () => { selectedKeys.value = [route.name] })
 
@@ -20,9 +24,8 @@ const logOut = async () => {
 
 <template>
   <a-layout class="layout">
-    <a-layout-header v-if="!userStore.loadingState" mode="horizontal">
-      <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }"
-        v-if="!userStore.loadingSession">
+    <a-layout-header mode="horizontal">
+      <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
         <a-menu-item v-if="userStore.userData" key="home">
           <router-link to="/">
             Orders
@@ -38,6 +41,11 @@ const logOut = async () => {
             Enter device
           </router-link>
         </a-menu-item>
+        <a-menu-item v-if="userStore.userData" key="record">
+          <router-link to="record">
+            Record
+          </router-link>
+        </a-menu-item>
         <a-menu-item v-if="!userStore.userData" key="login">
           <router-link to="login">
             login
@@ -48,8 +56,8 @@ const logOut = async () => {
             Register
           </router-link>
         </a-menu-item>
-        <a-menu-item type="danger">
-          <a-button v-if="userStore.userData" @click="logOut()">
+        <a-menu-item v-if="userStore.userData" @click="logOut()">
+          <a-button>
             Logout
           </a-button>
         </a-menu-item>

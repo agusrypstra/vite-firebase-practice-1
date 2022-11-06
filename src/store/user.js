@@ -19,7 +19,6 @@ export const useUserStore = defineStore("userStore", {
   },
   actions: {
     async registerUser(email, password) {
-      this.loadingState = true;
       try {
         const { user } = await createUserWithEmailAndPassword(
           auth,
@@ -27,16 +26,15 @@ export const useUserStore = defineStore("userStore", {
           password
         );
         this.userData = { email: user.email, uid: user.uid };
+        await router.push("/login");
       } catch (error) {
-        console.log(error);
+        console.log(error.code);
+        return error.code;
       } finally {
         this.loadingState = false;
-        await router.push("/");
       }
     },
     async loginUser(email, password) {
-      this.loadingState = true;
-      this.loadingSession = true;
       try {
         const { user } = await signInWithEmailAndPassword(
           auth,
@@ -44,14 +42,11 @@ export const useUserStore = defineStore("userStore", {
           password
         );
         this.userData = { email: user.email, uid: user.uid };
+        await router.push("/");
       } catch (error) {
-        console.log(error.code);
         return error.code;
       } finally {
-        this.loadingState = false;
-        await router.push("/");
       }
-      this.loadingSession = false;
     },
     async logOut() {
       const databaseStore = useDatabaseStore();

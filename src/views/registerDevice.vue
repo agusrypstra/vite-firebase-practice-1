@@ -1,36 +1,43 @@
 <script setup>
-import { ref } from 'vue';
-import router from '../router';
+import { async } from '@firebase/util';
+import { reactive } from 'vue';
 import { useDatabaseStore } from '../store/database'
-
 const databaseStore = useDatabaseStore()
-const device = ref({})
-const type = ref('')
-const description = ref('')
-const customer = ref('')
 
-const handleSubmit = () => {
-    device.type = type.value,
-        device.description = description.value,
-        device.customer = customer.value,
-        databaseStore.addOrder(device)
-    router.push('/')
+const formState = reactive({
+    type: "",
+    failure: "",
+    customer: "",
+    accesories: []
+})
+const onFinish = async () => {
+    const res = await databaseStore.addOrder(formState)
+    console.log(res);
 }
 
 </script>
 
 <template>
-    <div>
-
-        <div>
-            <h1>Device register</h1>
-            <form>
-                <input type="text" v-model="type" placeholder="Type">
-                <input type="text" placeholder="Describes the failure" v-model="description">
-                <input type="text" placeholder="Customer" v-model="customer">
-                <button type="submit" @click.prevent="handleSubmit()">Submit</button>
-            </form>
-        </div>
-
-    </div>
+    <a-form :model="formState" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }" @finish="onFinish">
+        <a-form-item name="type" label="Type" :rules="[{ required: true }]">
+            <a-input v-model:value="formState.type">
+            </a-input>
+        </a-form-item>
+        <a-form-item name="failure" label="Failure" :rules="[{ required: true }]">
+            <a-input v-model:value="formState.failure">
+            </a-input>
+        </a-form-item>
+        <a-form-item name="customer" label="Customer" :rules="[{ required: true }]">
+            <a-input v-model:value="formState.customer">
+            </a-input>
+        </a-form-item>
+        <a-form-item label="Accesories">
+            <a-checkbox-group v-model:value="formState.accesories">
+                <a-checkbox value="Charger" name="accesory">Charger</a-checkbox>
+                <a-checkbox value="Mouse" name="accesory">Mouse</a-checkbox>
+                <a-checkbox value="Bag" name="accesory">Bag</a-checkbox>
+            </a-checkbox-group>
+        </a-form-item>
+        <a-button type="primary" html-type="submit">Submit</a-button>
+    </a-form>
 </template>
